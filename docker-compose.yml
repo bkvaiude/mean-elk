@@ -25,7 +25,6 @@ services:
   logstash:
     image: docker.elastic.co/logstash/logstash:7.0.0
     hostname: "logstash"
-    user: root
     ports:
       - 5044:5044
       - 5054:5054
