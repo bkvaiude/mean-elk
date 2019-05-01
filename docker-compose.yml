@@ -6,6 +6,7 @@ services:
       - 4040:4040
     build: ./
     image: mean
+    hostname: "app"
     expose:
       - 4040
     environment:
@@ -20,11 +21,24 @@ services:
       - app_logs:/usr/src/app/server/config/log/
   mongo:
     image: mongo:3.6
+    hostname: "mongo"
   logstash:
     image: docker.elastic.co/logstash/logstash:7.0.0
+    hostname: "logstash"
+    user: root
+    ports:
+      - 5044:5044
+      - 5054:5054
+    volumes:
+      - ./dockerconf/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./dockerconf/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    environment:
+      - ELASTICSEARCH_HOSTS=https://5fe2eae3c9cc4862939470ff33d86445.us-east-1.aws.found.io:9243
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=LQfKbPCc83k4yAzBSVVMEeCS
   filebeat:
     image: docker.elastic.co/beats/filebeat:7.0.0
-    hostname: "{{.Service.Name}}-{{.Task.Slot}}"
+    hostname: "filebeat"
     user: root
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers
@@ -32,12 +46,6 @@ services:
       - /var/lib/docker/containers/:/var/lib/docker/containers
       - app_logs:/var/log/app
       - ./dockerconf/filebeat.yml:/usr/share/filebeat/filebeat.yml
-    environment:
-      - ELASTICSEARCH_HOSTS=https://5fe2eae3c9cc4862939470ff33d86445.us-east-1.aws.found.io:9243
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=LQfKbPCc83k4yAzBSVVMEeCS
-      - cloud.id=:dXMtZWFzdC0xLmF3cy5mb3VuZC5pbyQ1ZmUyZWFlM2M5Y2M0ODYyOTM5NDcwZmYzM2Q4NjQ0NSQ2MWI3ZjA1NGNhM2Q0OGIwOWQ2ZTgxZDlmMjE3YWVhMQ==
-      - cloud.auth=elastic:LQfKbPCc83k4yAzBSVVMEeCS
     command: ["--strict.perms=false"]
 volumes:
   app_logs:
