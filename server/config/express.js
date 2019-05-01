@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const httpError = require('http-errors');
 const logger = require('morgan');
+const json = require('morgan-json');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const compress = require('compression');
@@ -20,14 +21,16 @@ const app = express();
 /*if (config.env === 'development') {
   app.use(logger('combined'));
 }*/
-
+const format = json(':method :url :status :res[content-length] bytes :response-time ms');
+ 
+//app.use(morgan(format));
 var accessLogStream = rfs('access.log', {
   interval: '1d', // rotate daily
   path: path.join(__dirname, 'log')
 })
 
 // setup the logger
-app.use(logger('combined', { stream: accessLogStream }))
+app.use(logger(format, { stream: accessLogStream }))
 
 // Choose what fronten framework to serve the dist from
 var distDir = '../../dist/';
