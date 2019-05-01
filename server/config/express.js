@@ -13,12 +13,21 @@ const swaggerDocument = require('./swagger.json');
 const routes = require('../routes/index.route');
 const config = require('./config');
 const passport = require('./passport')
+var rfs = require('rotating-file-stream')
 
 const app = express();
 
-if (config.env === 'development') {
-  app.use(logger('dev'));
-}
+/*if (config.env === 'development') {
+  app.use(logger('combined'));
+}*/
+
+var accessLogStream = rfs('access.log', {
+  interval: '1d', // rotate daily
+  path: path.join(__dirname, 'log')
+})
+
+// setup the logger
+app.use(logger('combined', { stream: accessLogStream }))
 
 // Choose what fronten framework to serve the dist from
 var distDir = '../../dist/';
