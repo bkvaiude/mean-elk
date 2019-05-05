@@ -65,6 +65,6 @@ Importance of the following files
 What's remaining to cover?
 
 - How to collect docker container logs (using tags in filter) without breaking current working Application?
-- Clean up logs by setting up the clean cron on application logs 
+- Clean up logs by setting up the clean up cron on application logs 
 
 
