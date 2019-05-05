@@ -48,8 +48,23 @@ It is very basic web application, which can help us to understand `how does FLEK
 
 Here is workflow to follow
 
-1 Access a home page, [0.0.0.0:4040](http://localhost:4040/)
-1 `mean/server/config/log` will hold maintain the `access.log` with help of morgan npm module
-1 Filebeat will keep harvesting the `access.log` file which holding a log lines in json format
-1 A mentioned in configuration file. logstash will decode json log lines and load it into the ES
-1 With help of Kibana, you can query and debug the log lines and you can also form the visualizations
+1. Access a home page, [0.0.0.0:4040](http://localhost:4040/)
+2. `mean/server/config/log` will hold maintain the `access.log` with help of morgan npm module
+3. Filebeat will keep harvesting the `access.log` file which holding a log lines in json format
+4. A mentioned in configuration file. logstash will decode json log lines and load it into the ES
+5. With help of Kibana, you can query and debug the log lines and you can also form the visualizations
+
+Importance of the following files
+
+- `dockerconf/Dockerfile` : This file is responsible for main application which will be running on [0.0.0.0:4040](http://localhost:4040/)
+- `dockerconf/filebeat.yml` : This file is responsible for configuration of filebeat. For current demo, we'll use it to define input style of logs and to mention logstash connection
+- `dockerconf/logstash.conf` :  This file will hellp you to configure the logstash, in order to filter and transform the logs before loading it to elastic search.
+- `dockerconf/docker-compose.yml` :  This is the composer file which will help you to configure your stack
+- `dockerconf/logstash.yml` : Need to explore!!!
+
+What's remaining to cover?
+
+- How to collect docker container logs (using tags in filter) without breaking current working Application?
+- Clean up logs by setting up the clean cron on application logs 
+
+
