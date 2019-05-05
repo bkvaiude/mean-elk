@@ -67,4 +67,9 @@ What's remaining to cover?
 - How to collect docker container logs (using tags in filter) without breaking current working Application?
 - Clean up logs by setting up the clean up cron on application logs 
 
+### Elastic.co settings sample
+
+You need to update `docker-compose.yml` with proper ES config params.
+
+![alt ESConfigSample][https://github.com/bkvaiude/mean-elk/blob/master/dockerconf/ESConfig.png]
 
